@@ -1,54 +1,51 @@
 # Verification Laundering
 
+> **A passing test shows that a repair passes. It does not necessarily show that the diagnosis behind the repair was correct.**
 
-> **A passing test is evidence that a repair passes. It is not necessarily evidence that the diagnosis which motivated the repair was true.**
+This repository contains the code and data for **“Verification Laundering: When Execution Evidence Fails to Verify Agent Diagnoses.”**
 
-Successful execution verifies a repair, not necessarily the explanation that produced it. We call the resulting failure mode **verification laundering**.
+## Main results
 
-## Scientific scope
+* Execution gating accepts **44/45 correct diagnoses** and **24/27 fabricated diagnoses**.
+* With a stronger repair model, **25/27 known-false diagnoses** still pass the execution gate.
+* A simple program-change check rejects **4/24** persisted fabrications.
+* Random differential testing, property-based testing, and symbolic checking each reject **20/24**, while rejecting **0/34** applicable true fixes.
+* The remaining cases change behavior only outside the intended task specification.
 
-The study separates three stages that should not be conflated:
-
-1. **Fabrication:** Does a model generate an unsupported diagnosis? This is model-dependent; the paper does not claim that frontier models generally hallucinate bugs or fail end to end at high rates.
-2. **Laundering:** Conditional on a false diagnosis existing, does a verification gate certify it? This is the core architectural mechanism studied here.
-3. **Authority:** Does describing a lesson as “verified” make a later agent more likely to follow it? The current evidence is preliminary and underpowered.
-
-## Main frozen results
-
-- The historical execution gate preserves 44/45 true lessons and approximately 89% of fabricated lessons.
-- With a current reasoning model as the repairer, 25/27 (93%) injected known-false diagnoses pass the execution gate.
-- Simple repair self-consistency catches 4/24 persisted fabrications.
-- Behavioral comparison catches 20/24 (83%), with 0/34 observed tested true-fix false discards. This is not a claim that verification laundering or specification conformance is solved.
-- Random differential testing, property-based testing, and symbolic analysis identify the same 20 cases and miss the same four. In this artifact, symbolic analysis refers to the CrossHair backend exposed by `pbt_gate.py`; it is not a separate general-purpose symbolic verifier. The four residual cases change behavior while broadening the assumed task specification.
-- H21 contains 281 frozen generations: Claude Opus 5, 105/105; Gemini 3.1 Pro, 105/105; DeepSeek R1-0528, 71/105 (a partial exploratory sample). After five automated-grading corrections, all 127 completed H21 BUGGY diagnoses are specific-correct.
-- In the H23 authority pilot, FOLLOW is 7/27 (25.9%) for control and 10/27 (37.0%) for execution-verified framing. Discordant pairs are 0 control-only and 3 verified-only; exact McNemar \(p=0.25\). This is directional, preliminary evidence, not statistical confirmation.
-- H22 is an incomplete external-validity extension and does not support a headline empirical result.
-
-## Repository layout
+## Repository structure
 
 ```text
-config/prompts/     exact prompts retained for the included experiments
-data/               frozen banks, outputs, grading, protocols, and gate inputs
-scripts/            generation and analysis code
-figures/            reserved for submission figures
-paper/              reserved for anonymous paper sources
+config/       prompts and experiment settings
+data/         programs, generations, grading, and results
+scripts/      generation, verification, and analysis code
+figures/      paper figures
+paper/        paper source
 ```
 
-`data/historical/` contains the historical reflection/framing runs, `data/laundering/` the injected-diagnosis run, `data/verification/` frozen inputs used by stronger gates, and `data/h21/`–`data/h23/` the later studies.
-
-## Artifact verification
-
-The reviewer-facing, offline entry point is:
+## Run the checks
 
 ```bash
 python scripts/verify_claims.py
 ```
 
-It makes no network or API calls. It checks required files, the published SHA-256 values, H21 completion counts and adjudicated endpoint, and H23 manifest/output sizes and paired authority result.
+This checks the main reported results using the included data.
 
-This command verifies the integrity and internal consistency of the included artifact. It does **not** rerun model generation, recreate historical environments, or establish one-command end-to-end reproduction. See [REPRODUCIBILITY.md](REPRODUCIBILITY.md) for the boundary between artifact verification, frozen-output analysis, and API-dependent reruns.
+## Reproducibility
+
+See:
+
+```text
+REPRODUCIBILITY.md
+```
+
+for model settings, grading details, and instructions for rerunning the experiments.
 
 ## Environment
 
-The core verifier uses only the Python standard library. Historical generation scripts used the pinned packages in `requirements.txt`; some provider-dependent scripts also require provider SDKs, credentials supplied through environment variables, and model access that may no longer be identical. No credentials are included.
+Install dependencies with:
 
+```bash
+pip install -r requirements.txt
+```
+
+API-based generation scripts require access to the corresponding model providers.
