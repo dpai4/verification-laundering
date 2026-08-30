@@ -54,6 +54,3 @@ This command verifies the integrity and internal consistency of the included art
 
 The core verifier uses only the Python standard library. Historical generation scripts used the pinned packages in `requirements.txt`; some provider-dependent scripts also require provider SDKs, credentials supplied through environment variables, and model access that may no longer be identical. No credentials are included.
 
-## Double-blind status
-
-This working tree intentionally contains no author list, affiliation, personal contact information, identifying citation metadata, or author-named copyright. Repository history must also be anonymized before release; a clean anonymous history is recommended rather than publishing the current development history.
