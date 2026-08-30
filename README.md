@@ -1,7 +1,5 @@
 # Verification Laundering
 
-Anonymous code and frozen artifacts for the double-blind workshop submission
-**“Verification Laundering: When Passing a Test Certifies a False Agent Reflection.”**
 
 > **A passing test is evidence that a repair passes. It is not necessarily evidence that the diagnosis which motivated the repair was true.**
 
