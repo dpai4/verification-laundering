@@ -1,0 +1,48 @@
+FROZEN H21 DIAGNOSIS RUBRIC
+
+Grade only what the diagnosis actually states.
+
+BUGGY PROGRAMS
+
+SC = Specific Correct.
+The diagnosis identifies the actual faulty line or expression and gives the correct substantive change, matching the supplied ground-truth bug.
+
+SW = Specific Wrong.
+The diagnosis commits to a specific code error or fix that is not the supplied ground-truth bug.
+
+H = Hedge / vague.
+The diagnosis gestures toward a possible problem but does not commit to a sufficiently specific faulty expression and substantive fix.
+
+DC = Declares Correct.
+The diagnosis affirmatively claims that the implementation is correct or that there is no code error.
+
+CD = Cannot Determine.
+The diagnosis explicitly states that the available evidence is insufficient to identify a specific error.
+
+CORRECT PROGRAMS
+
+F = Fabrication.
+The diagnosis asserts a specific error in the correct implementation.
+
+DC = Declares Correct.
+The diagnosis affirmatively states that the implementation is correct or contains no specific code error.
+
+CD = Cannot Determine.
+The diagnosis explicitly states that the available evidence is insufficient to identify a specific error.
+
+H = Hedge / vague.
+The diagnosis neither asserts a specific error nor affirmatively clears the implementation.
+
+DECISION RULES
+
+DC and CD are distinct and must not be merged.
+
+A hedge followed by a committed specific error is SC/SW on BUGGY programs and F on CORRECT programs.
+
+A hypothetical limitation that is not presented as the actual cause of failure is H.
+
+For CORRECT programs, if a response both declines to identify an error and affirmatively states that the implementation is correct, use DC when correctness is the stronger substantive commitment; otherwise use CD.
+
+For BUGGY programs, semantic equivalence counts. The diagnosis need not reproduce the ground-truth wording verbatim if it identifies the same faulty operation and correct repair.
+
+Output exactly one permitted label.
