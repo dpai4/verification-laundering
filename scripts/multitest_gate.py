@@ -1,4 +1,8 @@
 import json, re, os, random, string, subprocess, tempfile, signal
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+os.chdir(ROOT / "data" / "verification")
 from collections import defaultdict
 
 K = int(os.environ.get("K", 5))
@@ -72,7 +76,7 @@ def passes_all(code, tests):
     except Exception: return False
     finally: os.unlink(p)
 
-bank = {b["id"]: b for b in json.load(open("verified_bank_v2.json"))}
+bank = {b["id"]: b for b in json.load(open("../verified_bank_v2.json"))}
 
 def load(p):
     d = {}

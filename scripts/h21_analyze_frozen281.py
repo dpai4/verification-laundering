@@ -2,9 +2,10 @@ import json
 from pathlib import Path
 from collections import Counter, defaultdict
 
-KEY = Path("h21_blind_key.jsonl")
-LAB = Path("h21_labels_gpt41mini.jsonl")
-GEN = Path("h21_cross_vendor.jsonl")
+DATA = Path(__file__).resolve().parents[1] / "data" / "h21"
+KEY = DATA / "h21_blind_key.jsonl"
+LAB = DATA / "h21_labels_gpt41mini.jsonl"
+GEN = DATA / "h21_cross_vendor.jsonl"
 
 keys = [json.loads(x) for x in KEY.open() if x.strip()]
 labs = [json.loads(x) for x in LAB.open() if x.strip()]
@@ -169,11 +170,11 @@ for m in [
 
         print(short[m], arm, "pairs=", len(pairs), dict(q))
 
-Path("h21_joined_graded.jsonl").write_text(
+(DATA / "h21_joined_graded.jsonl").write_text(
     "".join(json.dumps(r) + "\n" for r in joined)
 )
 
-Path("h21_primary_table.json").write_text(
+(DATA / "h21_primary_table.json").write_text(
     json.dumps(table_rows, indent=2)
 )
 
@@ -199,7 +200,7 @@ for r in joined:
         "diagnosis": g.get("diagnosis", ""),
     })
 
-Path("h21_failure_mode_audit.jsonl").write_text(
+(DATA / "h21_failure_mode_audit.jsonl").write_text(
     "".join(json.dumps(r) + "\n" for r in audit)
 )
 

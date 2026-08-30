@@ -1,4 +1,8 @@
 import json, re, os, sys, warnings, string
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+os.chdir(ROOT / "data" / "verification")
 import hypothesis
 from hypothesis import given, settings, strategies as st, HealthCheck, Phase
 warnings.filterwarnings("ignore")
@@ -86,7 +90,7 @@ def equivalent(orig, fix, name):
     except Exception as e:
         return None, f"harness:{type(e).__name__}"
 
-bank = {b["id"]: b for b in json.load(open("verified_bank_v2.json"))}
+bank = {b["id"]: b for b in json.load(open("../verified_bank_v2.json"))}
 
 def load(p):
     d = {}

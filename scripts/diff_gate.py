@@ -1,4 +1,8 @@
-import json, re, random, string, signal
+import json, re, random, string, signal, os
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+os.chdir(ROOT / "data" / "verification")
 from collections import defaultdict
 
 import os
@@ -65,7 +69,7 @@ def equivalent(c1, c2, name):
         if run(c1, args) != run(c2, args): return False, tried
     return True, tried
 
-bank = {b["id"]: b for b in json.load(open("verified_bank_v2.json"))}
+bank = {b["id"]: b for b in json.load(open("../verified_bank_v2.json"))}
 
 def load(p):
     d = {}

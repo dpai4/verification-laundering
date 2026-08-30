@@ -1,9 +1,12 @@
 import json, re
+from pathlib import Path
+
+DATA = Path(__file__).resolve().parents[1] / "data" / "verification"
 
 def normalize(code):
     return re.sub(r"\s+", "", code or "")
 
-rows = [json.loads(l) for l in open("h2_verified_write.jsonl")]
+rows = [json.loads(l) for l in (DATA / "h2_verified_write.jsonl").open()]
 
 # Gate rule: diagnosis asserts a specific error AND extracted fix == original code -> DISCARD
 # We already have per-row: intended, persisted (execution gate), fix_code, orig_code, fabricated label where known

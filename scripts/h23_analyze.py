@@ -1,13 +1,15 @@
 import json
+from pathlib import Path
 from collections import Counter
 from math import comb
 
-key = {r["n"]:r for r in json.load(open("h23_blind_key.json"))}
+DATA = Path(__file__).resolve().parents[1] / "data" / "h23"
+key = {r["n"]:r for r in json.load((DATA / "h23_blind_key.json").open())}
 labs = {
     r["n"]:r
     for r in (
         json.loads(x)
-        for x in open("h23_labels.jsonl")
+        for x in (DATA / "h23_labels.jsonl").open()
         if x.strip()
     )
 }
@@ -90,6 +92,6 @@ for cid,p in sorted(by.items()):
             "src=",p["control"]["src_model"]
         )
 
-with open("h23_joined.jsonl","w") as f:
+with (DATA / "h23_joined.jsonl").open("w") as f:
     for r in rows:
         f.write(json.dumps(r)+"\n")
